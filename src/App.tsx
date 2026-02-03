@@ -1,18 +1,24 @@
 import './App.css'
-import { BlockCat, BlockIcons1, BlockIcons2, BlockIcons3, BlockIcons4, BlockWithAnimal, ButtonBlock, ButtonNo, ButtonYes, Container, IconsContainer, MainBlock, Message, TextMain } from './styled'
+import { BlockCat, BlockIcons1, BlockIcons2, BlockIcons3, BlockIcons4, BlockWithAnimal, BlockWithImg, ButtonBlock, ButtonNo, ButtonYes, Container, ContainerIcon, IconsContainer, IconsContainer2, MainBlock, TextMain } from './styled'
 import Heart1 from './assets/Group-82.svg'
 import Heart2 from './assets/Group 83.svg'
 import Heart3 from './assets/Group 84.svg'
 import Heart4 from './assets/Group 85.svg'
-import Animal from './assets/Group 86.svg'
-import MessageImg from './assets/Group 89.svg'
+import Animal from './assets/Animal.svg'
+import Animal1 from './assets/Animal1.svg'
+import Animal2 from './assets/Animal2.svg'
+import Animal3 from './assets/Animal3.svg'
 import { useEffect, useRef, useState } from 'react'
 
 function App() {
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [scaleCount, setScaleCount] = useState(0);
   const [moveCount, setMoveCount] = useState(0);
+  const [moveCount2, setMoveCount2] = useState(0);
+  const [moveCount3, setMoveCount3] = useState(0);
   const [showVictoryBlock, setShowVictoryBlock] = useState(false);
+  const [showVictoryBlock2, setShowVictoryBlock2] = useState(false);
+  const [showVictoryBlock3, setShowVictoryBlock3] = useState(false);
   const [showCat, setShowCat] = useState(false);
   const buttonRef = useRef<HTMLButtonElement>(null);
   const yesButtonRef = useRef<HTMLButtonElement>(null);
@@ -21,21 +27,40 @@ function App() {
     const yesButton = yesButtonRef.current;
     if (yesButton) {
       const rect = yesButton.getBoundingClientRect();
+      
+      let offset = 80;
+      if (window.innerWidth <= 1200) {
+        offset = 40;
+      } else if (window.innerWidth <= 1366) {
+        offset = 50;
+      } else if (window.innerWidth <= 1600) {
+        offset = 50;
+      }
+      
       setPosition({ 
-        x: rect.right + 90, 
+        x: rect.right + offset, 
         y: rect.top 
       });
     }
-  }, []);
+  }, [window.innerWidth]);
 
   useEffect(() => {
-    if (moveCount >= 10) {
+    if (moveCount === 4) {
       setShowVictoryBlock(true);
+    } else if (moveCount2 === 8) {
+      setShowVictoryBlock(false);
+      setShowVictoryBlock2(true);
+    } else if (moveCount3 === 12) {
+      setShowVictoryBlock(false);
+      setShowVictoryBlock2(false);
+      setShowVictoryBlock3(true);
     }
-  }, [moveCount]);
+  }, [moveCount, moveCount2, moveCount3]);
 
   const handleMouseEnter = (e: React.MouseEvent<HTMLButtonElement>) => {
     setMoveCount(prev => prev + 1);
+    setMoveCount2(prev => prev + 1);
+    setMoveCount3(prev => prev + 1);
     setScaleCount(prev => prev < 4 ? prev + 1 : prev);
     
     const button = buttonRef.current;
@@ -96,44 +121,69 @@ function App() {
     <>
       <IconsContainer>
         <BlockIcons1>
-          <Heart1 />
-          <Heart2 />
+          <ContainerIcon>
+            <Heart1 />
+          </ContainerIcon>
+          <ContainerIcon>
+            <Heart2 />
+          </ContainerIcon>
         </BlockIcons1>
         <BlockIcons2>
-          <Heart3 />
-          <Heart4 />
+          <ContainerIcon>
+            <Heart3 />
+          </ContainerIcon>
+          <ContainerIcon>
+            <Heart4 />
+          </ContainerIcon>
         </BlockIcons2>
       </IconsContainer>
       <Container>
           {!showCat ? (
           <MainBlock>
             <BlockWithAnimal>
-              {showVictoryBlock && (
-                <Message>
-                  <MessageImg/>
-                </Message>
+              {!showVictoryBlock && !showVictoryBlock2 && !showVictoryBlock3 && (
+                <BlockWithImg>
+                  <Animal/>
+                </BlockWithImg>
               )}
-              <Animal/>
+              {showVictoryBlock && (
+                <BlockWithImg>
+                  <Animal1/>
+                </BlockWithImg>
+              )}
+                {showVictoryBlock2 && (
+                  <BlockWithImg>
+                    <Animal2/>
+                  </BlockWithImg>
+                )}
+              {showVictoryBlock3 && (
+                <BlockWithImg>
+                    <Animal3/>
+                </BlockWithImg>
+              )}
             </BlockWithAnimal>
             <TextMain>will you be my valentine?</TextMain>
-            <ButtonBlock>
+            <ButtonBlock margin={showVictoryBlock3}>
               <ButtonYes
+                anotherStyle={showVictoryBlock3}
                 ref={yesButtonRef}
                 scaleCount={scaleCount}
                 onClick={handleClickYes}
               >
                 Yes
               </ButtonYes>
-              <ButtonNo 
-                ref={buttonRef}
-                style={{ 
-                  left: `${position.x}px`, 
-                  top: `${position.y}px` 
-                }}
-                onMouseEnter={handleMouseEnter}
-              >
-                No
-              </ButtonNo>
+              {!showVictoryBlock3 && (
+                <ButtonNo 
+                  ref={buttonRef}
+                  style={{ 
+                    left: `${position.x}px`, 
+                    top: `${position.y}px` 
+                  }}
+                  onMouseEnter={handleMouseEnter}
+                >
+                  No
+                </ButtonNo>
+              ) }
             </ButtonBlock>
           </MainBlock>
           ) : (
@@ -142,16 +192,24 @@ function App() {
             </BlockCat>
           )}
       </Container>
-      <IconsContainer>
+      <IconsContainer2>
         <BlockIcons3>
-          <Heart1 />
-          <Heart2 />
+          <ContainerIcon>
+            <Heart1 />
+          </ContainerIcon>
+          <ContainerIcon>
+            <Heart2 />
+          </ContainerIcon>
         </BlockIcons3>
         <BlockIcons4>
-          <Heart3 />
-          <Heart4 />
+          <ContainerIcon>
+            <Heart3 />
+          </ContainerIcon>
+          <ContainerIcon>
+            <Heart4 />
+          </ContainerIcon>
         </BlockIcons4>
-      </IconsContainer>
+      </IconsContainer2>
     </>
   )
 }
