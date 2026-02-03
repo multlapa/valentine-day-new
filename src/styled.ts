@@ -6,8 +6,8 @@ export const Container = styled.div`
 
 export const MainBlock = styled.div`
     display: grid;
-    height: 600px;
-    width: 1000px;
+    height: 460px;
+    width: 900px;
     background-color: white;
     border-radius: 30px;
 `;
@@ -24,7 +24,7 @@ export const TextMain = styled.p`
     color: black;
     height: 20px;
     justify-content: center;
-    margin-top: -75px;
+    margin-top: -47px;
     font-size: 36px;
     font-weight: 600;
 `;
@@ -105,7 +105,7 @@ export const BlockWithAnimal = styled.div`
     display: flex;
     margin: auto;
     margin-top: -8px;
-    margin-right: 273px;
+    margin-right: 231px;
 `;
 
 export const Message = styled.div`
